@@ -36,5 +36,17 @@ class Student{
         }
         return false;
     }
+
+    //Read All Data from Database
+    public function getAllData()
+    {
+        $query = "SELECT * from $this->tableName";
+        $stuObj = $this->conn->prepare($query); // Prepare statement
+
+        //Execute Query
+        $stuObj->execute();
+
+        return $stuObj->get_result();
+    }
 }
 ?>
