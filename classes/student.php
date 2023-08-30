@@ -1,6 +1,7 @@
 <?php
 class Student{
     // Declare Variable
+    public $id;
     public $name;
     public $email;
     public $phone;
@@ -52,6 +53,7 @@ class Student{
     // Read Single student data
     public function getSingleStudent()
     {
+        // Query
         $query = "SELECT * FROM $this->tableName WHERE id= ?";
 
         // Prepare statement
@@ -60,6 +62,31 @@ class Student{
         $sinStuObj->execute();
         $data = $sinStuObj->get_result();
         return $data->fetch_assoc();
+    }
+
+    // Update Student data
+    public function updateStudent(){
+
+        // Query statement
+        $query = "UPDATE $this->tableName SET name = ?, email = ?, phone = ? WHERE id = ?";
+
+        //Prepare statement
+        $updateData = $this->conn->prepare($query);
+
+        // Sanitize input parameters
+        $this->name = htmlspecialchars(strip_tags($this->name));
+        $this->email = htmlspecialchars(strip_tags($this->email));
+        $this->phone = htmlspecialchars(strip_tags($this->phone));
+        $this->id = htmlspecialchars(strip_tags($this->id));
+
+        // Binding parameters with the query
+        $updateData->bind_param("sssi", $this->name, $this->email, $this->phone, $this->id);
+
+        //Execute query
+        if ($updateData->execute()){
+            return true;
+        }
+        return false;
     }
 }
 ?>
