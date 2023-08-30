@@ -48,5 +48,18 @@ class Student{
 
         return $stuObj->get_result();
     }
+
+    // Read Single student data
+    public function getSingleStudent()
+    {
+        $query = "SELECT * FROM $this->tableName WHERE id= ?";
+
+        // Prepare statement
+        $sinStuObj = $this->conn->prepare($query);
+        $sinStuObj->bind_param('i', $this->id); // Bind parameter with the prepared statement
+        $sinStuObj->execute();
+        $data = $sinStuObj->get_result();
+        return $data->fetch_assoc();
+    }
 }
 ?>
